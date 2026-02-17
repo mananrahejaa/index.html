@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serious Request 👀</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Comic Sans MS', 'Arial', sans-serif;
+  background: linear-gradient(135deg, #fff3a0, #ffe066);
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background: rgba(255,255,255,0.6);
+  border-radius: 20px;
+  padding: 24px;
+  width: 92%;
+  max-width: 420px;
+  min-height: 70vh;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  text-align: center;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.button {
+  background: #d9d9d9;
+  color: black;
+  padding: 14px 22px;
+  margin: 14px;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.button:active {
+  transform: scale(0.95);
+}
+
+.loading {
+  font-size: 18px;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {opacity: 0.4;}
+  50% {opacity: 1;}
+  100% {opacity: 0.4;}
+}
+
+.popper {
+  font-size: 42px;
+  animation: pop 0.8s infinite alternate;
+}
+
+@keyframes pop {
+  from {transform: scale(1);}
+  to {transform: scale(1.3);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <!-- PAGE 1 -->
+  <div class="page active" id="page1">
+    <p id="text1"></p>
+    <div class="button" onclick="goTo('page2')">Disclaimer 📜</div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page" id="page2">
+    <h2>Disclaimer</h2>
+    <p id="text2"></p>
+    <div class="button" onclick="goTo('page3')">Proceed 👉</div>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="page" id="page3">
+    <p id="text3"></p>
+    <div id="choices">
+      <div class="button" onclick="yesAnswer()">Yes🥹</div>
+      <div class="button" onclick="noStep(1)">No🥺</div>
+    </div>
+    <div id="response"></div>
+  </div>
+
+</div>
+
+<script>
+const texts = {
+  text1: `Hii Nandiniiiiii🙋 I hope this webpage finds you in good health and an even better mood,
+  because I'm about to place a very serious and slightly exciting request in front of you.
+  After some deep thinking, zero hesitation and a swollen left hand making me unable to type 🥲
+  I would like to remind you ki Ummmm 👉🏻👈🏻 actually mera thoda sa bday aarha hai...
+  So before jumping to any conclusion, a few disclaimers 🥹`,
+
+  text2: `1. Please gussa mt krna mujhe sahi m bura aur darr lgta hai 🥺
+  \n2. I am personally very optimistic.
+  \n3. Please prioritise your comfort and priorities over everything else.
+  \n4. I ASSURE YOU THE OBVIOUS THINGS!
+  \n5. ANY DECISION WILL BE TAKEN WITH UTMOST RESPECT.AND WITHOUT FURTHER QUESTIONS SO FEEL FREE CHOOSING WHAT YOU FEEL LIKE!!`,
+
+  text3: `After a very considerable thinking (probably of 2 seconds),
+  I am of the view of being in Pune this weekend, celebrating the day 🥳
+  This event is expected to include better conversations, good food and your presence, which automatically makes it a premium experience.💫
+
+  In return, I offer my undivided attention as usual,
+  some good dance moves 💃,
+  few well-timed compliments✨,
+  and jokes that that either impressively good or unimpressively bad 😌
+
+  So Nandini, do you think we might be able to meet around this weekend 🤞 (i.e., 21st/22nd)?
+  I meannnn👉🏻👈🏻 would it be possible? Again, your approval will be treated as the utmost priority and will give a smile on my face ofcourse which I won't even bother to hide even being here in the office.
+  May further details be discussed over time?`
+};
+
+function typeWriter(id, text, i = 0) {
+  if (i < text.length) {
+    document.getElementById(id).innerHTML += text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
+    setTimeout(() => typeWriter(id, text, i + 1), 30);
+  }
+}
+
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+
+  if (page === 'page2') typeWriter('text2', texts.text2);
+  if (page === 'page3') typeWriter('text3', texts.text3);
+}
+
+function loadingThen(html) {
+  const r = document.getElementById('response');
+  r.innerHTML = '<div class="loading">Thinking...</div>';
+  setTimeout(() => r.innerHTML = html, 1200);
+}
+
+function noStep(step) {
+  document.getElementById('choices').innerHTML = '';
+  if (step === 1) {
+    loadingThen(`
+      <p>Please confirm again 🥺</p>
+      <div class="button" onclick="yesAnswer()">Yes🙏</div>
+      <div class="button" onclick="noStep(2)">No😱</div>
+    `);
+  } else {
+    loadingThen(`
+      <p>Pkka? 🥲</p>
+      <div class="button" onclick="yesAnswer()">Yes🤏</div>
+      <div class="button" onclick="noFinal()">No😭</div>
+    `);
+  }
+}
+
+function noFinal() {
+  loadingThen(`
+    <p>
+      Okay noted 🤒<br><br>
+      Please send screenshot to the owner
+      because maker is not professional 😒
+    </p>
+  `);
+}
+
+function yesAnswer() {
+  loadingThen(`
+    <div class="popper">🎉🎉🎉</div>
+    <p>
+      Thanks for the bday gift 🥳💖<br><br>
+      Please send screenshot to the owner 😁
+    </p>
+  `);
+}
+
+typeWriter('text1', texts.text1);
+</script>
+
+</body>
+</html>
